@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/menu.unity.meta
 guid: 671921d10887fe14d8874f5242057f86
+========
+guid: 229a99b132277a849b77b43badfc6b2f
+>>>>>>>> kirill/develop_kirill:Assets/Scenes/Menu.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
