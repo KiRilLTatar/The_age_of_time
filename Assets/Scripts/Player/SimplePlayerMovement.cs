@@ -61,17 +61,34 @@ public class SimplePlayerMovement : MonoBehaviour
 
         bool isGrounded = control.isGrounded;
 
-        if (isGrounded && velocity.y < 0)
-            velocity.y = -2f;
+        // Обработка гравитации и прыжка
+        if (isGrounded)
+        {
+            if (velocity.y < 0)
+                velocity.y = -2f;
 
+            if (Input.GetButtonDown("Jump"))
+            {
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
+                animator.SetTrigger(animIDJump);
+            }
+        }
+        else
+        {
+            velocity.y += gravity * Time.deltaTime;
+        }
+
+        // Обработка ввода движения
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         Vector3 inputDir = new Vector3(x, 0f, z).normalized;
         bool isMoving = inputDir.magnitude >= 0.1f;
 
+        // Анимация
         animator.SetBool(animIDIsGrounded, isGrounded);
         animator.SetBool(animIDIsMoving, isMoving);
 
+        // Движение в направлении камеры
         Vector3 cameraForward = mainCamera.transform.forward;
         Vector3 cameraRight = mainCamera.transform.right;
         cameraForward.y = 0;
@@ -81,53 +98,57 @@ public class SimplePlayerMovement : MonoBehaviour
 
         Vector3 move = cameraForward * z + cameraRight * x;
 
+        // Поворот игрока
         if (isMoving)
         {
             Vector3 lookDir = new Vector3(move.x, 0, move.z);
-            Quaternion targetRotation = Quaternion.LookRotation(lookDir);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            if (lookDir.sqrMagnitude > 0.01f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(lookDir);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+            }
         }
 
-        control.Move(move.normalized * speed * Time.deltaTime);
-
-        if (Input.GetButtonDown("Jump") && isGrounded)
-        {
-            velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            animator.SetTrigger(animIDJump);
-        }
-
-        velocity.y += gravity * Time.deltaTime;
-        control.Move(velocity * Time.deltaTime);
+        // Движение
+        Vector3 moveDirection = move.normalized * speed;
+        moveDirection.y = velocity.y;
+        control.Move(moveDirection * Time.deltaTime);
 
         CheckHighlight();
     }
 
     void CheckHighlight()
     {
-        Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 5f))
+        // Отладочный луч — виден в Scene
+        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red);
+
+        if (Physics.Raycast(ray, out hit, 100f)) // увеличил дистанцию до 100f
         {
+            // Проверка тега объекта
             if (hit.collider.CompareTag("ForCraft"))
             {
                 Hightlightable currentHighlightable = hit.collider.GetComponent<Hightlightable>();
 
                 if (currentHighlightable != null && currentHighlightable != lastHighlighted)
                 {
-                    lastHighlighted?.Unhighlight();
-                    currentHighlightable.Highlight();
+                    lastHighlighted?.Unhighlight(); 
+                    currentHighlightable.Highlight(); 
                     lastHighlighted = currentHighlightable;
                 }
             }
             else
             {
+                // Объект не с нужным тегом — убрать подсветку
                 lastHighlighted?.Unhighlight();
                 lastHighlighted = null;
             }
         }
         else
         {
+            // Ничего не наведено
             lastHighlighted?.Unhighlight();
             lastHighlighted = null;
         }

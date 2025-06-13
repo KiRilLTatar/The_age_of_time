@@ -3,6 +3,9 @@ using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
+    public static InventoryManager Instance { get; private set; }
+
+    [Header("UI Elements")]
     public GameObject inventoryPanel;
 
     public TextMeshProUGUI crystalText;
@@ -12,6 +15,18 @@ public class InventoryManager : MonoBehaviour
     private int crystalCount = 0;
     private int woodCount = 0;
     private int metalCount = 0;
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject); 
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject); 
+    }
 
     private void Update()
     {

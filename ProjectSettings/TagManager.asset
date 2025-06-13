@@ -3,15 +3,23 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - FxTemporaire
+  - Obstacle
+  - Obstcales
+  - ForCraft
+  - Scrap
+  - Wood
+  - Ore
+  - CinemachineTarget
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Ground
   - Water
   - UI
-  - 
+  - Interactable
   - 
   - 
   - 
