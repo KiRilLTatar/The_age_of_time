@@ -1,5 +1,9 @@
 fileFormatVersion: 2
-guid: 99c9720ab356a0642a771bea13969a05
+<<<<<<<< HEAD:Assets/Forest.unity.meta
+guid: a2024781b9a2e4747b6f3ed5460026b3
+========
+guid: 2811b9544a7170343989c5c68370e552
+>>>>>>>> 3ec147498b550b5fba2178cbb66571bebed8e63a:Assets/Fight/Fight_scene.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
