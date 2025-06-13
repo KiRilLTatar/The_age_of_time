@@ -1273,7 +1273,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 758206586967553069}
-  - component: {fileID: 407572841258306756}
   m_Layer: 0
   m_Name: Inventori
   m_TagString: Untagged
@@ -1297,22 +1296,6 @@ Transform:
   - {fileID: 6360474919128930497}
   m_Father: {fileID: 7869040464671614203}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &407572841258306756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4272281273388005280}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae5665d2511c23e4d9072a35a6bcf233, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 3766437795276320614}
-  crystalText: {fileID: 5725048215482374382}
-  woodText: {fileID: 490249681706692676}
-  metalText: {fileID: 6492062814392358626}
 --- !u!1 &4739818849895864658
 GameObject:
   m_ObjectHideFlags: 0

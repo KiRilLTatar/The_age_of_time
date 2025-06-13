@@ -3,7 +3,7 @@ using TMPro;
 
 public class InventoryManager : MonoBehaviour
 {
-    public static InventoryManager Instance { get; private set; }
+    public static InventoryManager Instance;
 
     [Header("UI Elements")]
     public GameObject inventoryPanel;
@@ -18,14 +18,15 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null && Instance != this)
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
         {
             Destroy(gameObject); 
-            return;
         }
-
-        Instance = this;
-        DontDestroyOnLoad(gameObject); 
     }
 
     private void Update()
