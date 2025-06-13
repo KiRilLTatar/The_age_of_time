@@ -20,7 +20,6 @@ public class SimplePlayerMovement : MonoBehaviour
 
     void Awake()
     {
-        // Контроллер
         if (!control)
         {
             control = GetComponent<CharacterController>();
@@ -32,7 +31,6 @@ public class SimplePlayerMovement : MonoBehaviour
             }
         }
 
-        // Аниматор
         if (!animator)
         {
             animator = GetComponentInChildren<Animator>();
@@ -44,7 +42,6 @@ public class SimplePlayerMovement : MonoBehaviour
             }
         }
 
-        // Камера
         mainCamera = Camera.main;
         if (!mainCamera)
         {
@@ -53,7 +50,6 @@ public class SimplePlayerMovement : MonoBehaviour
             return;
         }
 
-        // Анимационные параметры
         animIDIsGrounded = Animator.StringToHash("IsGrounded");
         animIDIsMoving = Animator.StringToHash("IsMoving");
         animIDJump = Animator.StringToHash("Jump");
@@ -65,21 +61,17 @@ public class SimplePlayerMovement : MonoBehaviour
 
         bool isGrounded = control.isGrounded;
 
-        // Вертикальная скорость
         if (isGrounded && velocity.y < 0)
             velocity.y = -2f;
 
-        // Ввод
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
         Vector3 inputDir = new Vector3(x, 0f, z).normalized;
         bool isMoving = inputDir.magnitude >= 0.1f;
 
-        // Анимация
         animator.SetBool(animIDIsGrounded, isGrounded);
         animator.SetBool(animIDIsMoving, isMoving);
 
-        // Направление движения относительно камеры
         Vector3 cameraForward = mainCamera.transform.forward;
         Vector3 cameraRight = mainCamera.transform.right;
         cameraForward.y = 0;
@@ -89,7 +81,6 @@ public class SimplePlayerMovement : MonoBehaviour
 
         Vector3 move = cameraForward * z + cameraRight * x;
 
-        // Поворот по направлению движения
         if (isMoving)
         {
             Vector3 lookDir = new Vector3(move.x, 0, move.z);
@@ -97,21 +88,17 @@ public class SimplePlayerMovement : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
 
-        // Движение
         control.Move(move.normalized * speed * Time.deltaTime);
 
-        // Прыжок
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             velocity.y = Mathf.Sqrt(jumpHeight * -2f * gravity);
             animator.SetTrigger(animIDJump);
         }
 
-        // Гравитация
         velocity.y += gravity * Time.deltaTime;
         control.Move(velocity * Time.deltaTime);
 
-        // Подсветка
         CheckHighlight();
     }
 
